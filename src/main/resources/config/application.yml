@@ -1,0 +1,6 @@
+spring:
+  profiles:
+    include: jdbc
+server:
+  port: 8088
+
