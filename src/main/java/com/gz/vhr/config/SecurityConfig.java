@@ -8,13 +8,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.*;
+import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
@@ -37,6 +41,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     HrService hrService;
+    /*@Autowired
+    CustomFilterInvocationSecurityMetadataSource customFilterInvocationSecurityMetadataSource;
+    @Autowired
+    CustomUrlDecisionManager customUrlDecisionManager;*/
 
     /**
      * 密码加密
@@ -51,10 +59,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         managerBuilder.userDetailsService(hrService);
     }
 
+    public void configure(WebSecurity web)throws Exception{
+        web.ignoring().antMatchers("/login");
+    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .anyRequest().authenticated()
+                /*.withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
+                    @Override
+                    public <O extends FilterSecurityInterceptor> O postProcess(O object) {
+                        object.setAccessDecisionManager(customUrlDecisionManager);
+                        object.setSecurityMetadataSource(customFilterInvocationSecurityMetadataSource);
+                        return object;
+                    }
+                })*/
                 .and()
                 .formLogin()
                 .loginProcessingUrl("/doLogin")
@@ -78,9 +98,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 })
                 .failureHandler(new AuthenticationFailureHandler() {
                     @Override
-                    public void onAuthenticationFailure(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
-                        httpServletResponse.setContentType("application/json;charset=utf-8");
-                        PrintWriter writer = httpServletResponse.getWriter();
+                    public void onAuthenticationFailure(HttpServletRequest req, HttpServletResponse resp, AuthenticationException e) throws IOException, ServletException {
+                        resp.setContentType("application/json;charset=utf-8");
+                        PrintWriter writer = resp.getWriter();
                         RespBean respBean= RespBean.fail("登录失败");
                         if (e instanceof LockedException){
                             respBean.setMsg("账户被锁定，请联系管理员");
@@ -114,6 +134,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and()
                 .csrf()
-                .disable();
+                .disable()
+                //没有认证登录时在这里处理结果，不重定向
+                .exceptionHandling()
+                .authenticationEntryPoint(new AuthenticationEntryPoint() {
+            @Override
+            public void commence(HttpServletRequest req, HttpServletResponse resp, AuthenticationException e) throws IOException, ServletException {
+                resp.setContentType("application/json;charset=utf-8");
+                PrintWriter writer = resp.getWriter();
+                RespBean respBean= RespBean.fail("访问失败");
+                if (e instanceof InsufficientAuthenticationException){
+                    respBean.setMsg("尚未登录");
+                }
+                writer.write(new ObjectMapper().writeValueAsString(respBean));
+                writer.flush();
+                writer.close();
+            }
+        });
     }
 }

@@ -1,6 +1,7 @@
 package com.gz.vhr.controller;
 
 import com.gz.vhr.bean.RespBean;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class LoginController {
 
     @GetMapping("/login")
+    //@CrossOrigin("*") 解决跨域
     public RespBean login(){
         return RespBean.fail("尚未登录,请登录！");
     }

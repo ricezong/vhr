@@ -1,8 +1,8 @@
 package com.gz.vhr.bean;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
-import org.springframework.stereotype.Component;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
 /**
  * @ClassName Meta
@@ -12,9 +12,9 @@ import org.springframework.stereotype.Component;
  * @Version 1.0
  */
 @Data
-@Component
+@EqualsAndHashCode(callSuper = false)
+@Accessors(chain = true)
 public class Meta {
     private Boolean keepAlive;
     private Boolean requireAuth;
-
 }

@@ -1,6 +1,5 @@
 package com.gz.vhr.service;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.gz.vhr.bean.Hr;
 import com.gz.vhr.mapper.HrMapper;
@@ -28,12 +27,11 @@ public class HrService extends ServiceImpl<HrMapper, Hr> implements UserDetailsS
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        QueryWrapper<Hr> wrapper=new QueryWrapper<>();
-        wrapper.eq("username",username);
-        Hr hr = hrMapper.selectOne(wrapper);
+        Hr hr = hrMapper.loadUserByUsername(username);
         if (hr == null) {
-            throw new UsernameNotFoundException("用户名不存在");
+            throw new UsernameNotFoundException("用户名不存在!");
         }
+        hr.setRoles(hrMapper.getHrRolesById(hr.getId()));
         return hr;
     }
 }

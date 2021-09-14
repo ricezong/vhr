@@ -6,6 +6,9 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import java.time.LocalDateTime;
 import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
+import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -23,14 +26,9 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @TableName("joblevel")
 public class JobLevel implements Serializable {
-
-
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
-    /**
-     * 职称名称
-     */
     @TableField("name")
     private String name;
 
@@ -38,10 +36,9 @@ public class JobLevel implements Serializable {
     private String titleLevel;
 
     @TableField("createDate")
-    private LocalDateTime createDate;
+    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "Asia/Shanghai")
+    private Date createDate;
 
     @TableField("enabled")
     private Boolean enabled;
-
-
 }

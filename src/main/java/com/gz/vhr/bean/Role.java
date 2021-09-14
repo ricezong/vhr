@@ -22,8 +22,6 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @TableName("role")
 public class Role implements Serializable {
-
-
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 

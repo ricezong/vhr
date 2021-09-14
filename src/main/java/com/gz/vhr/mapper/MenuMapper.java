@@ -2,6 +2,9 @@ package com.gz.vhr.mapper;
 
 import com.gz.vhr.bean.Menu;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * <p>
@@ -11,6 +14,11 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author zong
  * @since 2021-07-31
  */
+@Repository
 public interface MenuMapper extends BaseMapper<Menu> {
 
+    //根据登录id查询菜单
+    List<Menu> getMenusByHrId(Integer HrId);
+
+    List<Menu> getAllMenusWithRole();
 }
