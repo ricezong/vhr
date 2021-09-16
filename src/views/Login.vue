@@ -1,6 +1,10 @@
 <template>
     <div>
-        <el-form :rules="rules" ref="loginForm" :model="loginForm" class="loginContainer">
+        <el-form :rules="rules"
+                 v-loading="loading"
+                 ref="loginForm"
+                 :model="loginForm"
+                 class="loginContainer">
             <h1 class="loginTitle">用户登录</h1>
             <el-form-item prop="username">
                 <el-input size="normal" type="text" v-model="loginForm.username" auto-complete="off" placeholder="请输入用户名"></el-input>
@@ -21,8 +25,9 @@
         name: "Login",
         data() {
             return {
+                loading:false,
                 loginForm: {
-                    username: 'admin',
+                    username: 'zong',
                     password: '123'
                 },
                 checked: true,
@@ -36,7 +41,9 @@
             submitLogin() {
                 this.$refs.loginForm.validate((valid) => {
                     if (valid) {
+                        this.loading=true;
                         this.postKeyValueRequest('/doLogin', this.loginForm).then(resp => {
+                            this.loading=false;
                             if (resp) {
                                 window.sessionStorage.setItem("user", JSON.stringify(resp.obj));
                                 let path = this.$route.query.redirect;

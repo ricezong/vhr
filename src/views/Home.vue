@@ -16,7 +16,7 @@
                 </el-dropdown>
             </el-header>
             <el-container>
-                <el-aside>
+                <el-aside style="border-right: 1px solid #EBEEF5">
                     <el-menu router unique-opened>
                         <el-submenu :index="index+''" v-for="(item,index) in routes" v-if="!item.hidden" :key="index">
                             <template slot="title">
@@ -30,19 +30,22 @@
                         </el-submenu>
                     </el-menu>
                 </el-aside>
-                <el-container>
-                    <el-main>
-                        <el-breadcrumb separator-class="el-icon-arrow-right" v-if="this.$router.currentRoute.path!='/home'">
-                            <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
-                            <el-breadcrumb-item><span style="font-weight: bold">{{this.$router.currentRoute.name}}</span></el-breadcrumb-item>
-                        </el-breadcrumb>
-                        <div class="homeWelcome" v-if="this.$router.currentRoute.path=='/home'">
-                            我吊你啊！
-                        </div>
-                        <router-view class="homeRouterView"/>
-                    </el-main>
-                </el-container>
+                    <el-container>
+                        <el-scrollbar style="height:610px;flex-grow:1;" wrap-style="overflow-x:hidden;">
+                            <el-main>
+                                <el-breadcrumb separator-class="el-icon-arrow-right" v-if="this.$router.currentRoute.path!='/home'">
+                                    <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
+                                    <el-breadcrumb-item><span style="font-weight: bold">{{this.$router.currentRoute.name}}</span></el-breadcrumb-item>
+                                </el-breadcrumb>
+                                <div class="homeWelcome" v-if="this.$router.currentRoute.path=='/home'">
+                                    我吊你啊！
+                                </div>
+                                <router-view class="homeRouterView"/>
+                            </el-main>
+                        </el-scrollbar>
+                    </el-container>
             </el-container>
+            <el-footer style="background-color: #f7fbfd;display: flex;align-items: center;justify-content:center;font-weight: bold;">&copy;孔明灯</el-footer>
         </el-container>
     </div>
 </template>
@@ -80,7 +83,6 @@
                     });
                 }
             }
-
         }
     }
 </script>

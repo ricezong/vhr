@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-tabs v-model="activeName" type="card">
+        <el-tabs v-model="activeName" type="border-card">
             <el-tab-pane label="部门管理" name="depmana"><dep-mana/></el-tab-pane>
             <el-tab-pane label="职位管理" name="posmana"><pos-mana/></el-tab-pane>
             <el-tab-pane label="职称管理" name="joblevelmana"><job-level-mana/></el-tab-pane>
@@ -21,7 +21,7 @@
         name: "SysBasic",
         data(){
             return{
-                activeName:'joblevelmana'
+                activeName:'permissmana'
             }
         },
         components:{

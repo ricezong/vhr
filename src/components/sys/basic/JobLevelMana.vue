@@ -26,7 +26,7 @@
                     stripe
                     size="small"
                     @selection-change="handleSelectionChange"
-                    max-height="400"
+                    max-height="385"
                     style="width: 80%;margin: 10px 0;">
                 <el-table-column
                         type="selection"
