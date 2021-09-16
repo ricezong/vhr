@@ -15,6 +15,8 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 public class Meta {
+    //是否存活
     private Boolean keepAlive;
+    //是否需要验证
     private Boolean requireAuth;
 }

@@ -24,13 +24,10 @@ import lombok.experimental.Accessors;
 public class Role implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
-
+    //角色英文名
     @TableField("name")
     private String name;
-
-    /**
-     * 角色名称
-     */
+    //角色中文名
     @TableField("nameZh")
     private String nameZh;
 

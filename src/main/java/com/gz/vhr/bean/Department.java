@@ -5,6 +5,9 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -27,9 +30,6 @@ public class Department implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
-    /**
-     * 部门名称
-     */
     @TableField("name")
     private String name;
 
@@ -45,5 +45,8 @@ public class Department implements Serializable {
     @TableField("isParent")
     private Boolean isParent;
 
+    private List<Department> children=new ArrayList<>();
+
+    private Integer result;
 
 }

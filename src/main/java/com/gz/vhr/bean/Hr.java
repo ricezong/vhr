@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -85,6 +86,7 @@ public class Hr implements Serializable, UserDetails {
     private List<Role> roles;
 
     @Override
+    @JsonIgnore//忽略
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities=new ArrayList<>(roles.size());
         for (Role role : roles) {
@@ -124,4 +126,5 @@ public class Hr implements Serializable, UserDetails {
     public boolean isEnabled() {
         return enabled;
     }
+
 }

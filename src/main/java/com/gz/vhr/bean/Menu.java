@@ -24,8 +24,6 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @TableName("menu")
 public class Menu implements Serializable {
-
-
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
@@ -51,8 +49,8 @@ public class Menu implements Serializable {
     private Boolean enabled;
 
     private Meta meta;
-
+    //一级菜单下的二级菜单
     private List<Menu> children;
-
+    //有权限访问该菜单项的角色
     private List<Role> roles;
 }

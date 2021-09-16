@@ -41,10 +41,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     HrService hrService;
-    /*@Autowired
+    @Autowired
     CustomFilterInvocationSecurityMetadataSource customFilterInvocationSecurityMetadataSource;
     @Autowired
-    CustomUrlDecisionManager customUrlDecisionManager;*/
+    CustomUrlDecisionManager customUrlDecisionManager;
 
     /**
      * 密码加密
@@ -66,21 +66,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .anyRequest().authenticated()
-                /*.withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
+                //.anyRequest().authenticated()
+                .withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
                     @Override
                     public <O extends FilterSecurityInterceptor> O postProcess(O object) {
                         object.setAccessDecisionManager(customUrlDecisionManager);
                         object.setSecurityMetadataSource(customFilterInvocationSecurityMetadataSource);
                         return object;
                     }
-                })*/
+                })
                 .and()
                 .formLogin()
-                .loginProcessingUrl("/doLogin")
-                .loginPage("/Login")
                 .usernameParameter("username")
                 .passwordParameter("password")
+                .loginProcessingUrl("/doLogin")
+                .loginPage("/Login")
                 .successHandler(new AuthenticationSuccessHandler() {
                     @Override
                     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
@@ -141,6 +141,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             @Override
             public void commence(HttpServletRequest req, HttpServletResponse resp, AuthenticationException e) throws IOException, ServletException {
                 resp.setContentType("application/json;charset=utf-8");
+                //尚未认证
+                resp.setStatus(401);
                 PrintWriter writer = resp.getWriter();
                 RespBean respBean= RespBean.fail("访问失败");
                 if (e instanceof InsufficientAuthenticationException){

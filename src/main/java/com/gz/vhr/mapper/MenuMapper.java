@@ -2,6 +2,7 @@ package com.gz.vhr.mapper;
 
 import com.gz.vhr.bean.Menu;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -21,4 +22,8 @@ public interface MenuMapper extends BaseMapper<Menu> {
     List<Menu> getMenusByHrId(Integer HrId);
 
     List<Menu> getAllMenusWithRole();
+
+    List<Menu> getAllMenus();
+
+    List<Integer> getMidsByRid(Integer rid);
 }
