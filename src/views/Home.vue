@@ -2,21 +2,24 @@
     <div>
         <el-container>
             <el-header class="homeHeader">
-                <div class="title">微人事</div>
-                <el-dropdown class="el-dropdown" @command="commandHandler">
-                <span class="el-dropdown-link">
-                    <i><img :src="user.userFace"></i>
-                </span>
-                    <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item>{{user.name}}</el-dropdown-item>
-                        <el-dropdown-item command="userinfo">个人中心</el-dropdown-item>
-                        <el-dropdown-item command="setting">设置</el-dropdown-item>
-                        <el-dropdown-item command="logout" divided>退出登录</el-dropdown-item>
-                    </el-dropdown-menu>
-                </el-dropdown>
+                <div class="title" @click="goHome">微人事</div>
+                <div style="display: flex;align-items: center;">
+                    <el-button icon="el-icon-message-solid" type="text" style="display: flex;color: white;font-size: 15px" @click="goChat"></el-button>
+                    <el-dropdown class="el-dropdown" @command="commandHandler">
+                        <span class="el-dropdown-link">
+                            <i><img :src="user.userFace"></i>
+                        </span>
+                        <el-dropdown-menu slot="dropdown">
+                            <el-dropdown-item>{{user.name}}</el-dropdown-item>
+                            <el-dropdown-item command="userinfo">个人中心</el-dropdown-item>
+                            <el-dropdown-item command="setting">设置</el-dropdown-item>
+                            <el-dropdown-item command="logout" divided>退出登录</el-dropdown-item>
+                        </el-dropdown-menu>
+                    </el-dropdown>
+                </div>
             </el-header>
             <el-container>
-                <el-aside style="border-right: 1px solid #EBEEF5">
+                <el-aside style="border-right: 1px solid #EBEEF5;">
                     <el-menu router unique-opened>
                         <el-submenu :index="index+''" v-for="(item,index) in routes" v-if="!item.hidden" :key="index">
                             <template slot="title">
@@ -45,7 +48,7 @@
                         </el-scrollbar>
                     </el-container>
             </el-container>
-            <el-footer style="background-color: #f7fbfd;display: flex;align-items: center;justify-content:center;font-weight: bold;">&copy;孔明灯</el-footer>
+            <el-footer style="background-color: #f7fbfd;display: flex;align-items: center;justify-content:center;font-size: 12px;color: #cac6c6">翻斗大街翻斗花园二号楼1001室&copy;孔明灯</el-footer>
         </el-container>
     </div>
 </template>
@@ -64,6 +67,12 @@
             }
         },
         methods: {
+            goHome(){
+                this.$router.push("/home");
+            },
+            goChat(){
+              this.$router.push("/chat");
+            },
             commandHandler(cmd) {
                 if (cmd == 'logout') {
                     this.$confirm('确定退出吗?', '', {
@@ -111,27 +120,21 @@
         font-size: 30px;
         font-family: 华文行楷;
         color: white;
+        cursor: pointer;
     }
 
     .el-dropdown {
         cursor: pointer;
-        text-align: center;
     }
 
     .el-dropdown-link img {
+        display: flex;
         width: 48px;
         height: 48px;
         border-radius: 48px;
-        display: flex;
-        align-items: center; /*垂直居中*/
-        margin: 0 31px;
+        margin: 0 24px;
     }
-    .block{
-        width: 340px;
-        height: 150px;
-        padding: 26px;
-        float: left;
-    }
+
 
     .el-carousel__item h3 {
         color: #475669;
@@ -140,13 +143,5 @@
         line-height: 150px;
         margin: 0;
         text-align: center;
-    }
-
-    .el-carousel__item:nth-child(2n) {
-        background-color: #99a9bf;
-    }
-
-    .el-carousel__item:nth-child(2n+1) {
-        background-color: #d3dce6;
     }
 </style>
