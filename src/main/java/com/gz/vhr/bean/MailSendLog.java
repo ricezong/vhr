@@ -1,5 +1,7 @@
 package com.gz.vhr.bean;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.time.LocalDate;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -22,6 +24,8 @@ import lombok.experimental.Accessors;
 @TableName("mail_send_log")
 public class MailSendLog implements Serializable {
 
+    @TableId(value = "id", type = IdType.AUTO)
+    private Integer id;
 
     @TableField("msgId")
     private String msgId;

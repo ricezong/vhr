@@ -4,3 +4,7 @@ spring:
 server:
   port: 8088
 
+#打印SQL日志
+logging:
+  level:
+    com.gz.vhr.mapper : debug

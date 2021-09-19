@@ -1,11 +1,9 @@
 package com.gz.vhr.service;
 
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.gz.vhr.bean.Hr;
-import com.gz.vhr.bean.HrRole;
 import com.gz.vhr.mapper.HrMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.gz.vhr.mapper.HrRoleMapper;
@@ -17,7 +15,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,7 +37,9 @@ public class HrService extends ServiceImpl<HrMapper, Hr> implements UserDetailsS
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Hr hr = hrMapper.loadUserByUsername(username);
+        QueryWrapper<Hr> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("username",username);
+        Hr hr = hrMapper.selectOne(queryWrapper);
         if (hr == null) {
             throw new UsernameNotFoundException("用户名不存在!");
         }
@@ -68,5 +67,11 @@ public class HrService extends ServiceImpl<HrMapper, Hr> implements UserDetailsS
 
     public Integer deleteHrById(Integer id) {
         return hrMapper.deleteById(id);
+    }
+
+    public List<Map<String, Object>> getAllHrsExceptCurrentHr() {
+        QueryWrapper<Hr> queryWrapper=new QueryWrapper<>();
+        queryWrapper.ne("id",HrUtils.getCurrentHr().getId());
+        return hrMapper.selectMaps(queryWrapper);
     }
 }

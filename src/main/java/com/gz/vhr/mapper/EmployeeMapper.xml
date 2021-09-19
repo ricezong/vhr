@@ -2,4 +2,123 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gz.vhr.mapper.EmployeeMapper">
 
+    <resultMap id="BaseResultMap" type="com.gz.vhr.bean.Employee">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="gender" property="gender" jdbcType="CHAR"/>
+        <result column="birthday" property="birthday" jdbcType="DATE"/>
+        <result column="idCard" property="idCard" jdbcType="CHAR"/>
+        <result column="wedlock" property="wedlock" jdbcType="CHAR"/>
+        <result column="nationId" property="nationId" jdbcType="INTEGER"/>
+        <result column="nativePlace" property="nativePlace" jdbcType="VARCHAR"/>
+        <result column="politicId" property="politicId" jdbcType="INTEGER"/>
+        <result column="email" property="email" jdbcType="VARCHAR"/>
+        <result column="phone" property="phone" jdbcType="VARCHAR"/>
+        <result column="address" property="address" jdbcType="VARCHAR"/>
+        <result column="departmentId" property="departmentId" jdbcType="INTEGER"/>
+        <result column="jobLevelId" property="jobLevelId" jdbcType="INTEGER"/>
+        <result column="posId" property="posId" jdbcType="INTEGER"/>
+        <result column="engageForm" property="engageForm" jdbcType="VARCHAR"/>
+        <result column="tiptopDegree" property="tiptopDegree" jdbcType="CHAR"/>
+        <result column="specialty" property="specialty" jdbcType="VARCHAR"/>
+        <result column="school" property="school" jdbcType="VARCHAR"/>
+        <result column="beginDate" property="beginDate" jdbcType="DATE"/>
+        <result column="workState" property="workState" jdbcType="CHAR"/>
+        <result column="workID" property="workID" jdbcType="CHAR"/>
+        <result column="contractTerm" property="contractTerm" jdbcType="DOUBLE"/>
+        <result column="conversionTime" property="conversionTime" jdbcType="DATE"/>
+        <result column="notWorkDate" property="notWorkDate" jdbcType="DATE"/>
+        <result column="beginContract" property="beginContract" jdbcType="DATE"/>
+        <result column="endContract" property="endContract" jdbcType="DATE"/>
+        <result column="workAge" property="workAge" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <resultMap id="AllEmployeeInfo" type="com.gz.vhr.bean.Employee" extends="BaseResultMap">
+        <association property="nation" javaType="com.gz.vhr.bean.Nation">
+            <id column="nid" property="id"/>
+            <result column="nname" property="name"/>
+        </association>
+        <association property="politicsStatus" javaType="com.gz.vhr.bean.PoliticsStatus">
+            <id column="pid" property="id"/>
+            <result column="pname" property="name"/>
+        </association>
+        <association property="department" javaType="com.gz.vhr.bean.Department">
+            <id column="did" property="id"/>
+            <result column="dname" property="name"/>
+        </association>
+        <association property="jobLevel" javaType="com.gz.vhr.bean.JobLevel">
+            <id column="jid" property="id"/>
+            <result column="jname" property="name"/>
+        </association>
+        <association property="position" javaType="com.gz.vhr.bean.Position">
+            <id column="posid" property="id"/>
+            <result column="posname" property="name"/>
+        </association>
+    </resultMap>
+
+    <select id="getEmployeeByPage" resultMap="AllEmployeeInfo">
+        select e.*,p.`id` as pid,p.`name` as pname,n.`id` as nid,n.`name` as nname,d.`id` as did,d.`name` as
+        dname,j.`id` as jid,j.`name` as jname,pos.`id` as posid,pos.`name` as posname from employee e,nation
+        n,politicsstatus p,department d,joblevel j,position pos where e.`nationId`=n.`id` and e.`politicId`=p.`id` and
+        e.`departmentId`=d.`id` and e.`jobLevelId`=j.`id` and e.`posId`=pos.`id` limit #{pageNum},#{size}
+        <!--<if test="emp.name !=null and emp.name!=''">
+            and e.name like concat('%',#{emp.name},'%')
+        </if>
+        <if test="emp.politicId !=null">
+            and e.politicId =#{emp.politicId}
+        </if>
+        <if test="emp.nationId !=null">
+            and e.nationId =#{emp.nationId}
+        </if>
+        <if test="emp.departmentId !=null">
+            and e.departmentId =#{emp.departmentId}
+        </if>
+        <if test="emp.jobLevelId !=null">
+            and e.jobLevelId =#{emp.jobLevelId}
+        </if>
+        <if test="emp.engageForm !=null and emp.engageForm!=''">
+            and e.engageForm =#{emp.engageForm}
+        </if>
+        <if test="emp.posId !=null">
+            and e.posId =#{emp.posId}
+        </if>
+        <if test="beginDateScope !=null">
+            and e.beginDate between #{beginDateScope[0]} and #{beginDateScope[1]}
+        </if>
+        <if test="pageNum !=null and size!=null">
+            limit #{pageNum},#{size}
+        </if>-->
+    </select>
+
+    <select id="getTotal" resultType="java.lang.Long">
+        select count(*) from employee e
+            <!--<where>
+                <if test="emp!=null">
+                <if test="emp.name !=null and emp.name!=''">
+                    and e.name like concat('%',#{emp.name},'%')
+                </if>
+                <if test="emp.politicId !=null">
+                    and e.politicId =#{emp.politicId}
+                </if>
+                <if test="emp.nationId !=null">
+                    and e.nationId =#{emp.nationId}
+                </if>
+                <if test="emp.jobLevelId !=null">
+                    and e.jobLevelId =#{emp.jobLevelId}
+                </if>
+                <if test="emp.departmentId !=null">
+                    and e.departmentId =#{emp.departmentId}
+                </if>
+                <if test="emp.engageForm !=null and emp.engageForm!=''">
+                    and e.engageForm =#{emp.engageForm}
+                </if>
+                <if test="emp.posId !=null">
+                    and e.posId =#{emp.posId}
+                </if>
+            </if>
+                <if test="beginDateScope !=null">
+                and e.beginDate between #{beginDateScope[0]} and #{beginDateScope[1]}
+            </if>
+        </where>-->
+    </select>
 </mapper>

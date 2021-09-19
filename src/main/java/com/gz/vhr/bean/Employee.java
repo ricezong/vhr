@@ -193,5 +193,18 @@ public class Employee implements Serializable {
     @TableField("workAge")
     private Integer workAge;
 
+    //国籍
+    private Nation nation;
 
+    //政治面貌
+    private PoliticsStatus politicsStatus;
+
+    //部门信息
+    private Department department;
+
+    //职称等级
+    private JobLevel jobLevel;
+
+    //职位
+    private Position position;
 }

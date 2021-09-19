@@ -1,10 +1,15 @@
 package com.gz.vhr.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.gz.vhr.bean.Employee;
+import com.gz.vhr.bean.RespPageBean;
 import com.gz.vhr.mapper.EmployeeMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * <p>
@@ -17,4 +22,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class EmployeeService extends ServiceImpl<EmployeeMapper, Employee> implements IService<Employee> {
 
+    @Autowired
+    EmployeeMapper employeeMapper;
+
+    public RespPageBean getEmployeeByPage(Long pageNum, Long size) {
+        if (pageNum != null && size != null) {
+            pageNum = (pageNum - 1) * size;
+        }
+        List<Employee> employeeVo = employeeMapper.getEmployeeByPage(pageNum, size);
+        Long total = employeeMapper.getTotal();
+        return new RespPageBean(total, employeeVo);
+    }
 }

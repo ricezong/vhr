@@ -83,6 +83,8 @@ public class Hr implements Serializable, UserDetails {
     @TableField("remark")
     private String remark;
 
+    //不查询该字段
+    @TableField(exist = false)
     private List<Role> roles;
 
     @Override

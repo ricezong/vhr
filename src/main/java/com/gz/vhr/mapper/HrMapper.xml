@@ -23,10 +23,6 @@
         </collection>
     </resultMap>
 
-    <select id="loadUserByUsername" resultMap="BaseResultMap">
-        select * from hr where username=#{username}
-    </select>
-
     <select id="getHrRolesById" resultType="com.gz.vhr.bean.Role">
         select r.* from role r,hr_role hrr where hrr.rid=r.id and hrr.hrid=#{id}
     </select>
