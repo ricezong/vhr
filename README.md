@@ -18,3 +18,4 @@
 8. ...
 
 ### 项目效果图
+https://cdn.jsdelivr.net/gh/ricezong/vhr@front/demo_img/d1.jpg
