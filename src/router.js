@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Login from './views/Login.vue'
 import Home from "./views/Home";
 import FriendChat from "./views/chat/FriendChat";
+import HrInfo from "./views/HrInfo";
 Vue.use(Router)
 
 export default new Router({
@@ -23,6 +24,12 @@ export default new Router({
           path: '/chat',
           name: '聊天室',
           component: FriendChat,
+          hidden: true
+        },
+        {
+          path: '/hrinfo',
+          name: '个人中心',
+          component: HrInfo,
           hidden: true
         }
       ]

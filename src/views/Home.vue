@@ -5,12 +5,12 @@
                 <div class="title" @click="goHome">微人事</div>
                 <div style="display: flex;align-items: center;">
                     <el-button icon="el-icon-message-solid" type="text" style="display: flex;color: white;font-size: 15px" @click="goChat"></el-button>
+                    <span style="margin: 0 10px;cursor: pointer">{{user.name}}</span>
                     <el-dropdown class="el-dropdown" @command="commandHandler">
                         <span class="el-dropdown-link">
                             <i><img :src="user.userFace"></i>
                         </span>
                         <el-dropdown-menu slot="dropdown">
-                            <el-dropdown-item>{{user.name}}</el-dropdown-item>
                             <el-dropdown-item command="userinfo">个人中心</el-dropdown-item>
                             <el-dropdown-item command="setting">设置</el-dropdown-item>
                             <el-dropdown-item command="logout" divided>退出登录</el-dropdown-item>
@@ -90,6 +90,8 @@
                             message: '已取消退出'
                         });
                     });
+                }else if (cmd == 'userinfo') {
+                    this.$router.push('/hrinfo');
                 }
             }
         }
@@ -132,10 +134,8 @@
         width: 48px;
         height: 48px;
         border-radius: 48px;
-        margin: 0 24px;
+        margin: 0 24px 0 0;
     }
-
-
     .el-carousel__item h3 {
         color: #475669;
         font-size: 14px;
