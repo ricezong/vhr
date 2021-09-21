@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,6 +48,10 @@ public class HrService extends ServiceImpl<HrMapper, Hr> implements UserDetailsS
         return hr;
     }
 
+    public Hr getCurrentHr() {
+        return hrMapper.getCurrentHr(HrUtils.getCurrentHr().getId());
+    }
+
     public List<Hr> getAllHrs(String keywords) {
         return hrMapper.getAllHrs(HrUtils.getCurrentHr().getId(),keywords);
     }
@@ -54,6 +59,17 @@ public class HrService extends ServiceImpl<HrMapper, Hr> implements UserDetailsS
     public Integer updateHr(Hr hr) {
         UpdateWrapper<Hr> updateWrapper=new UpdateWrapper<>();
         updateWrapper.eq("id",hr.getId()).set("enabled",hr.getEnabled());
+        return hrMapper.update(null,updateWrapper);
+    }
+
+    public Integer updateHrInfo(Hr hr) {
+        UpdateWrapper<Hr> updateWrapper=new UpdateWrapper<>();
+        updateWrapper.eq("id",hr.getId())
+                     .set("name",hr.getName())
+                     .set("phone",hr.getPhone())
+                     .set("telephone",hr.getTelephone())
+                     .set("address",hr.getAddress())
+                     .set("remark",hr.getRemark());
         return hrMapper.update(null,updateWrapper);
     }
 
@@ -74,4 +90,25 @@ public class HrService extends ServiceImpl<HrMapper, Hr> implements UserDetailsS
         queryWrapper.ne("id",HrUtils.getCurrentHr().getId());
         return hrMapper.selectMaps(queryWrapper);
     }
+
+    //TODO
+    public boolean updateHrPwd(String oldpass, String pass, Integer hrid) {
+        Hr hr = hrMapper.selectById(hrid);
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        if (encoder.matches(oldpass, hr.getPassword())) {
+            UpdateWrapper<Hr> wrapper=new UpdateWrapper();
+            wrapper.eq("id",hrid).set("password",hr.setPassword(encoder.encode(pass)));
+            if (hrMapper.update(null,wrapper)>0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /*public Integer updateUserFace(String url, Integer id) {
+        Hr hr=new Hr();
+        hr.setUserFace(url);
+        hr.setId(id);
+        return hrMapper.updateById(hr);
+    }*/
 }

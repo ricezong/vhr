@@ -10,8 +10,7 @@ import java.util.Collection;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 import lombok.experimental.Accessors;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -30,7 +29,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Accessors(chain = true)
 @TableName("hr")
 public class Hr implements Serializable, UserDetails {
-
 
     /**
      * hrID

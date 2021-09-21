@@ -56,6 +56,32 @@
         </association>
     </resultMap>
 
+    <resultMap id="EmployeeWithSalary" type="com.gz.vhr.bean.Employee" extends="BaseResultMap">
+        <association property="salary" javaType="com.gz.vhr.bean.Salary">
+            <id column="sid" property="id" jdbcType="INTEGER"/>
+            <result column="sbasicSalary" property="basicSalary" jdbcType="INTEGER"/>
+            <result column="sbonus" property="bonus" jdbcType="INTEGER"/>
+            <result column="slunchSalary" property="lunchSalary" jdbcType="INTEGER"/>
+            <result column="strafficSalary" property="trafficSalary" jdbcType="INTEGER"/>
+            <result column="sallSalary" property="allSalary" jdbcType="INTEGER"/>
+            <result column="spensionBase" property="pensionBase" jdbcType="INTEGER"/>
+            <result column="spensionPer" property="pensionPer" jdbcType="REAL"/>
+            <result column="screateDate" property="createDate" jdbcType="TIMESTAMP"/>
+            <result column="smedicalBase" property="medicalBase" jdbcType="INTEGER"/>
+            <result column="smedicalPer" property="medicalPer" jdbcType="REAL"/>
+            <result column="saccumulationFundBase" property="accumulationFundBase" jdbcType="INTEGER"/>
+            <result column="saccumulationFundPer" property="accumulationFundPer" jdbcType="REAL"/>
+            <result column="sname" property="name" jdbcType="VARCHAR"/>
+        </association>
+        <association property="department" javaType="com.gz.vhr.bean.Department">
+            <result column="dname" property="name"/>
+        </association>
+    </resultMap>
+
+    <insert id="updateEmpSalById">
+        REPLACE INTO empsalary (eid,sid) VALUES(#{eid},#{sid})
+    </insert>
+
     <select id="getEmployeeByPage" resultMap="AllEmployeeInfo">
         select e.*,p.`id` as pid,p.`name` as pname,n.`id` as nid,n.`name` as nname,d.`id` as did,d.`name` as
         dname,j.`id` as jid,j.`name` as jname,pos.`id` as posid,pos.`name` as posname from employee e,nation
@@ -92,7 +118,7 @@
 
     <select id="getTotal" resultType="java.lang.Long">
         select count(*) from employee e
-            <!--<where>
+            <where>
                 <if test="emp!=null">
                 <if test="emp.name !=null and emp.name!=''">
                     and e.name like concat('%',#{emp.name},'%')
@@ -119,6 +145,20 @@
                 <if test="beginDateScope !=null">
                 and e.beginDate between #{beginDateScope[0]} and #{beginDateScope[1]}
             </if>
-        </where>-->
+        </where>
+    </select>
+
+    <select id="getEmployeeByPageWithSalary" resultMap="EmployeeWithSalary">
+        SELECT e.*,d.`name` AS dname,s.`id` AS sid,s.`accumulationFundBase` AS
+        saccumulationFundBase,s.`accumulationFundPer` AS saccumulationFundPer,s.`allSalary` AS
+        sallSalary,s.`basicSalary` AS sbasicSalary,s.`bonus` AS sbonus,s.`createDate` AS screateDate,s.`lunchSalary` AS
+        slunchSalary,s.`medicalBase` AS smedicalBase,s.`medicalPer` AS smedicalPer,s.`name` AS sname,s.`pensionBase` AS
+        spensionBase,s.`pensionPer` AS spensionPer,s.`trafficSalary` AS strafficSalary FROM employee e LEFT JOIN
+        empsalary es ON e.`id`=es.`eid` LEFT JOIN salary s ON es.`sid`=s.`id` LEFT JOIN department d ON
+        e.`departmentId`=d.`id`
+        order by e.id
+        <if test="pageNum !=null and size !=null">
+            limit #{pageNum},#{size}
+        </if>
     </select>
 </mapper>

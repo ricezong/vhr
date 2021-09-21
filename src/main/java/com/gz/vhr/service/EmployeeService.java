@@ -30,7 +30,20 @@ public class EmployeeService extends ServiceImpl<EmployeeMapper, Employee> imple
             pageNum = (pageNum - 1) * size;
         }
         List<Employee> employeeVo = employeeMapper.getEmployeeByPage(pageNum, size);
-        Long total = employeeMapper.getTotal();
+        Long total = employeeMapper.getTotal(null,null);
         return new RespPageBean(total, employeeVo);
+    }
+
+    public RespPageBean getEmployeeByPageWithSalary(Long pageNum, Long size) {
+        if (pageNum != null && size != null) {
+            pageNum = (pageNum - 1) * size;
+        }
+        List<Employee> employeeVo = employeeMapper.getEmployeeByPageWithSalary(pageNum, size);
+        Long total = employeeMapper.getTotal(null,null);
+        return new RespPageBean(total, employeeVo);
+    }
+
+    public Integer updateEmpSalById(Integer eid, Integer sid) {
+        return employeeMapper.updateEmpSalById(eid,sid);
     }
 }

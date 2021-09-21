@@ -207,4 +207,8 @@ public class Employee implements Serializable {
 
     //职位
     private Position position;
+
+    //薪资
+    @TableField(exist = false)
+    private Salary salary;
 }

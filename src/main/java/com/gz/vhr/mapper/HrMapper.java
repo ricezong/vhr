@@ -22,5 +22,7 @@ public interface HrMapper extends BaseMapper<Hr> {
 
     List<Role> getHrRolesById(Integer id);
 
+    Hr getCurrentHr(@Param("hrid") Integer hrid);
+
     List<Hr> getAllHrs(@Param("hrid") Integer hrid, @Param("keywords") String keywords);
 }

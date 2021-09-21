@@ -23,7 +23,9 @@ public interface EmployeeMapper extends BaseMapper<Employee> {
 
     List<Employee> getEmployeeByPage(@Param("pageNum") Long pageNum, @Param("size") Long size);
 
-    //Long getTotal(@Param("emp") Employee employee,@Param("beginDateScope") Date[] beginDateScope);
-    Long getTotal();
+    Long getTotal(@Param("emp") Employee employee,@Param("beginDateScope") Date[] beginDateScope);
 
+    List<Employee> getEmployeeByPageWithSalary(@Param("pageNum") Long pageNum, @Param("size") Long size);
+
+    Integer updateEmpSalById(@Param("eid") Integer eid,@Param("sid") Integer sid);
 }

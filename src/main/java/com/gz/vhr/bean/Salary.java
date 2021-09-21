@@ -6,6 +6,9 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import java.time.LocalDateTime;
 import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
+import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -74,7 +77,8 @@ public class Salary implements Serializable {
      * 启用时间
      */
     @TableField("createDate")
-    private LocalDateTime createDate;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private Date createDate;
 
     /**
      * 医疗基数
