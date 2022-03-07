@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  * <p>
- *  前端控制器
+ *  工资账套设置
  * </p>
  *
  * @author zong
@@ -19,7 +19,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/salary/sob")
-public class SalaryController {
+public class SalarySobController {
 
     @Autowired
     SalaryService salaryService;

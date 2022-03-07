@@ -33,6 +33,9 @@ public class Department implements Serializable {
     @TableField("name")
     private String name;
 
+    @TableField(exist = false)
+    private String adname;
+
     @TableField("parentId")
     private Integer parentId;
 
@@ -45,8 +48,10 @@ public class Department implements Serializable {
     @TableField("isParent")
     private Boolean isParent;
 
+    @TableField(exist = false)
     private List<Department> children=new ArrayList<>();
 
+    @TableField(exist = false)
     private Integer result;
 
 }

@@ -35,6 +35,9 @@ public class Position implements Serializable {
     @TableField("name")
     private String name;
 
+    @TableField(exist = false)
+    private String apname;
+
     @TableField("createDate")
     @JsonFormat(pattern = "yyyy-MM-dd",timezone = "Asia/Shanghai")
     private Date createDate;

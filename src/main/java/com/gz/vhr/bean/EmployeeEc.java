@@ -64,5 +64,4 @@ public class EmployeeEc implements Serializable {
     @TableField("remark")
     private String remark;
 
-
 }

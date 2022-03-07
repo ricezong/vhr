@@ -2,12 +2,16 @@ package com.gz.vhr.bean;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
-import java.time.LocalDate;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
@@ -22,6 +26,7 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @TableName("employee")
+@ToString
 public class Employee implements Serializable {
 
 
@@ -193,22 +198,70 @@ public class Employee implements Serializable {
     @TableField("workAge")
     private Integer workAge;
 
+    /**
+     * 考评分
+     */
+    @TableField("testScore")
+    private Integer testScore;
+
     //国籍
+    @TableField(exist = false)
     private Nation nation;
 
     //政治面貌
+    @TableField(exist = false)
     private PoliticsStatus politicsStatus;
 
     //部门信息
+    @TableField(exist = false)
     private Department department;
 
     //职称等级
+    @TableField(exist = false)
     private JobLevel jobLevel;
 
     //职位
+    @TableField(exist = false)
     private Position position;
 
     //薪资
     @TableField(exist = false)
     private Salary salary;
+
+    //奖惩
+    @TableField(exist = false)
+    private EmployeeEc employeeEc;
+
+    //培训
+    @TableField(exist = false)
+    private EmployeeTrain employeeTrain;
+
+    //调薪
+    @TableField(exist = false)
+    private AdjustSalary adjustSalary;
+
+    //调动
+    @TableField(exist = false)
+    private EmployeeRemove employeeRemove;
+
+
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+    }
+
+    public void setBeginDate(Date beginDate) {
+        this.beginDate = beginDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+    }
+
+    public void setConversionTime(Date conversionTime) {
+        this.conversionTime = conversionTime.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+    }
+
+    public void setBeginContract(Date beginContract) {
+        this.beginContract = beginContract.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+    }
+
+    public void setEndContract(Date endContract) {
+        this.endContract = endContract.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+    }
 }

@@ -2,6 +2,6 @@ spring:
   datasource:
     druid:
       driver-class-name: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://localhost:3306/vhr?useUnicode=true&useSSL=false&characterEncoding=utf-8&serverTimezone=GMT
+      url: jdbc:mysql://localhost:3306/vhr?useUnicode=true&useSSL=false&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
       username: root
       password: '0825'

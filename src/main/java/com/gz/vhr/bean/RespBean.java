@@ -23,6 +23,10 @@ public class RespBean {
     private String msg;
     private Object obj;
 
+    public static RespBean build(){
+        return new RespBean();
+    }
+
     public static RespBean success(String msg){
         return new RespBean(200,msg,null);
     }
@@ -37,5 +41,20 @@ public class RespBean {
 
     public static RespBean fail(String msg, Object obj){
         return new RespBean(500,msg,obj);
+    }
+
+    public RespBean setStatus(Integer status){
+        this.status=status;
+        return this;
+    }
+
+    public RespBean setMsg(String msg) {
+        this.msg = msg;
+        return this;
+    }
+
+    public RespBean setObj(Object obj) {
+        this.obj = obj;
+        return this;
     }
 }

@@ -12,7 +12,7 @@ import java.util.Date;
 
 /**
  * @ClassName WsController
- * @Description TODO
+ * @Description 发送消息
  * @Author 孔明灯
  * @Data 2021/9/19 16:53
  * @Version 1.0

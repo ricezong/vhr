@@ -1,6 +1,7 @@
 package com.gz.vhr.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.gz.vhr.bean.RespPageBean;
 import com.gz.vhr.bean.Salary;
 import com.gz.vhr.mapper.SalaryMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -30,6 +31,10 @@ public class SalaryService extends ServiceImpl<SalaryMapper, Salary> implements 
 
     public Integer addSalary(Salary salary) {
         salary.setCreateDate(new Date());
+        salary.setAllSalary(salary.getBasicSalary()
+                        +salary.getBonus()
+                        +salary.getLunchSalary()
+                        +salary.getTrafficSalary());
         return salaryMapper.insert(salary);
     }
 
@@ -38,6 +43,10 @@ public class SalaryService extends ServiceImpl<SalaryMapper, Salary> implements 
     }
 
     public Integer updateSalaryById(Salary salary) {
+        salary.setAllSalary(salary.getBasicSalary()
+                +salary.getBonus()
+                +salary.getLunchSalary()
+                +salary.getTrafficSalary());
         return salaryMapper.updateById(salary);
     }
 }

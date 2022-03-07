@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  * @ClassName SysConfigController
- * @Description TODO
+ * @Description 查询用户菜单
  * @Author 孔明灯
  * @Data 2021/8/17 15:53
  * @Version 1.0

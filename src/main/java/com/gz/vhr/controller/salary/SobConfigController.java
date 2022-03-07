@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  * @ClassName SobConfigController
- * @Description TODO
+ * @Description 员工账套设置
  * @Author 孔明灯
  * @Data 2021/9/20 20:58
  * @Version 1.0
@@ -27,8 +27,8 @@ public class SobConfigController {
     SalaryService salaryService;
 
     @GetMapping("/")
-    public RespPageBean getEmployeeByPageWithSalary(@RequestParam(defaultValue = "1") Long pageNum,@RequestParam(defaultValue = "10") Long size){
-        return employeeService.getEmployeeByPageWithSalary(pageNum,size);
+    public RespPageBean getEmployeeByPageWithSalary(@RequestParam(defaultValue = "1") Long page,@RequestParam(defaultValue = "10") Long size){
+        return employeeService.getEmployeeByPageWithSalary(page,size);
     }
 
     @GetMapping("/salaries")

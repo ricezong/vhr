@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  * @ClassName PermissController
- * @Description TODO
+ * @Description 用户权限管理
  * @Author 孔明灯
  * @Data 2021/9/14 20:14
  * @Version 1.0

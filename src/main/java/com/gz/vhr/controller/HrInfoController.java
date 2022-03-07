@@ -14,6 +14,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Map;
 
+/**
+ * <p>
+ *  个人中心
+ * </p>
+ *
+ * @author zong
+ * @since 2021-07-31
+ */
 @RestController
 public class HrInfoController {
 

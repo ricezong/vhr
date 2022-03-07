@@ -2,4 +2,110 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gz.vhr.mapper.EmployeeRemoveMapper">
 
+    <resultMap id="BaseResultMap" type="com.gz.vhr.bean.Employee">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="gender" property="gender" jdbcType="CHAR"/>
+        <result column="birthday" property="birthday" jdbcType="DATE"/>
+        <result column="idCard" property="idCard" jdbcType="CHAR"/>
+        <result column="wedlock" property="wedlock" jdbcType="CHAR"/>
+        <result column="nationId" property="nationId" jdbcType="INTEGER"/>
+        <result column="nativePlace" property="nativePlace" jdbcType="VARCHAR"/>
+        <result column="politicId" property="politicId" jdbcType="INTEGER"/>
+        <result column="email" property="email" jdbcType="VARCHAR"/>
+        <result column="phone" property="phone" jdbcType="VARCHAR"/>
+        <result column="address" property="address" jdbcType="VARCHAR"/>
+        <result column="departmentId" property="departmentId" jdbcType="INTEGER"/>
+        <result column="jobLevelId" property="jobLevelId" jdbcType="INTEGER"/>
+        <result column="posId" property="posId" jdbcType="INTEGER"/>
+        <result column="engageForm" property="engageForm" jdbcType="VARCHAR"/>
+        <result column="tiptopDegree" property="tiptopDegree" jdbcType="CHAR"/>
+        <result column="specialty" property="specialty" jdbcType="VARCHAR"/>
+        <result column="school" property="school" jdbcType="VARCHAR"/>
+        <result column="beginDate" property="beginDate" jdbcType="DATE"/>
+        <result column="workState" property="workState" jdbcType="CHAR"/>
+        <result column="workID" property="workID" jdbcType="CHAR"/>
+        <result column="contractTerm" property="contractTerm" jdbcType="DOUBLE"/>
+        <result column="conversionTime" property="conversionTime" jdbcType="DATE"/>
+        <result column="notWorkDate" property="notWorkDate" jdbcType="DATE"/>
+        <result column="beginContract" property="beginContract" jdbcType="DATE"/>
+        <result column="endContract" property="endContract" jdbcType="DATE"/>
+        <result column="workAge" property="workAge" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <resultMap id="EmployeeMv" type="com.gz.vhr.bean.Employee" extends="BaseResultMap">
+        <association property="employeeRemove" javaType="com.gz.vhr.bean.EmployeeRemove">
+            <id column="id" property="id" jdbcType="INTEGER"/>
+            <result column="eid" property="eid" jdbcType="INTEGER"/>
+            <result column="afterDepId" property="afterDepId" jdbcType="INTEGER"/>
+            <result column="afterJobId" property="afterJobId" jdbcType="INTEGER"/>
+            <result column="removeDate" property="removeDate" jdbcType="DATE"/>
+            <result column="reason" property="reason" jdbcType="VARCHAR"/>
+        </association>
+        <association property="position" javaType="com.gz.vhr.bean.Position">
+            <result column="pname" property="name"/>
+            <result column="apname" property="apname"/>
+        </association>
+        <association property="department" javaType="com.gz.vhr.bean.Department">
+            <result column="dname" property="name"/>
+            <result column="adname" property="adname"/>
+        </association>
+    </resultMap>
+
+    <select id="getEmpMvByPage" resultMap="EmployeeMv">
+        SELECT e.*,d.`name` AS adname,p.`name` AS apname
+        FROM(SELECT e.id,e.workID,e.`name`,e.gender,p.`name` AS pname,d.`name` AS dname,er.afterJobId,er.afterDepId,er.removeDate,er.reason
+        FROM employee e
+        LEFT JOIN position p ON p.id = e.posId
+        LEFT JOIN department d ON d.id = e.departmentId
+        LEFT JOIN employeeremove er ON er.eid = e.id
+        ORDER BY er.removeDate DESC LIMIT 1000) e
+        LEFT JOIN department d ON e.afterDepId = d.id
+        LEFT JOIN position p ON e.afterJobId = p.id
+        <where>
+            <if test="empName !=null and empName!=''">
+                and e.name like concat('%',#{empName},'%')
+            </if>
+        </where>
+        GROUP BY e.workID
+        ORDER BY e.removeDate DESC,e.workID
+        <if test="page !=null and size !=null">
+            limit #{page},#{size}
+        </if>
+    </select>
+
+    <select id="getTotal" resultType="java.lang.Long">
+        select count(*) from employee e
+        <where>
+            <if test="empName !=null and empName!=''">
+                and e.name like concat('%',#{empName},'%')
+            </if>
+        </where>
+    </select>
+
+    <select id="getAllMvs" resultMap="EmployeeMv">
+        SELECT e.*,d.`name` AS adname,p.`name` AS apname
+        FROM(SELECT er.id,e.workID,e.`name`,e.gender,p.`name` AS pname,d.`name` AS dname,er.afterJobId,er.afterDepId,er.removeDate,er.reason
+        FROM employee e
+        LEFT JOIN position p ON p.id = e.posId
+        LEFT JOIN department d ON d.id = e.departmentId
+        LEFT JOIN employeeremove er ON er.eid = e.id
+        ORDER BY er.removeDate DESC LIMIT 1000) e,department d,position p where e.afterDepId=d.id and e.afterJobId=p.id
+        <if test="empName !=null and empName!=''">
+            and e.name like concat('%',#{empName},'%')
+        </if>
+        ORDER BY e.removeDate DESC,e.workID
+        <if test="page !=null and size !=null">
+            limit #{page},#{size}
+        </if>
+    </select>
+
+    <select id="getCount" resultType="java.lang.Long">
+        SELECT count(*) from employeeremove er left join employee e on e.id=er.eid
+        <where>
+            <if test="empName !=null and empName!=''">
+                and e.name like concat('%',#{empName},'%')
+            </if>
+        </where>
+    </select>
 </mapper>

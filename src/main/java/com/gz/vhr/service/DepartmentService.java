@@ -36,4 +36,8 @@ public class DepartmentService extends ServiceImpl<DepartmentMapper, Department>
     public void deleteDepById(Department department) {
         departmentMapper.deleteDepById(department);
     }
+
+    public List<Department> getAllDepartmentsWithOutChildren() {
+        return departmentMapper.selectList(null);
+    }
 }

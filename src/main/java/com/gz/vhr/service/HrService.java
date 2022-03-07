@@ -91,7 +91,7 @@ public class HrService extends ServiceImpl<HrMapper, Hr> implements UserDetailsS
         return hrMapper.selectMaps(queryWrapper);
     }
 
-    //TODO
+    //TODO 修改密码未完成
     public boolean updateHrPwd(String oldpass, String pass, Integer hrid) {
         Hr hr = hrMapper.selectById(hrid);
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();

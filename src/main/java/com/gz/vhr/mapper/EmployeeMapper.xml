@@ -31,6 +31,7 @@
         <result column="beginContract" property="beginContract" jdbcType="DATE"/>
         <result column="endContract" property="endContract" jdbcType="DATE"/>
         <result column="workAge" property="workAge" jdbcType="INTEGER"/>
+        <result column="testScore" property="testScore" jdbcType="INTEGER"/>
     </resultMap>
 
     <resultMap id="AllEmployeeInfo" type="com.gz.vhr.bean.Employee" extends="BaseResultMap">
@@ -78,6 +79,27 @@
         </association>
     </resultMap>
 
+    <resultMap id="EmpSalWithDep" type="com.gz.vhr.bean.Employee" extends="BaseResultMap">
+        <association property="salary" javaType="com.gz.vhr.bean.Salary">
+            <id column="sid" property="id" jdbcType="INTEGER"/>
+            <result column="basicSalary" property="basicSalary" jdbcType="INTEGER"/>
+            <result column="bonus" property="bonus" jdbcType="INTEGER"/>
+            <result column="lunchSalary" property="lunchSalary" jdbcType="INTEGER"/>
+            <result column="trafficSalary" property="trafficSalary" jdbcType="INTEGER"/>
+            <result column="allSalary" property="allSalary" jdbcType="INTEGER"/>
+        </association>
+        <association property="department" javaType="com.gz.vhr.bean.Department">
+            <result column="dname" property="name"/>
+        </association>
+        <association property="position" javaType="com.gz.vhr.bean.Position">
+            <result column="pname" property="name"/>
+        </association>
+    </resultMap>
+
+    <select id="maxWorkID" resultType="java.lang.Integer">
+        select max(workID) from employee
+    </select>
+
     <insert id="updateEmpSalById">
         REPLACE INTO empsalary (eid,sid) VALUES(#{eid},#{sid})
     </insert>
@@ -86,8 +108,8 @@
         select e.*,p.`id` as pid,p.`name` as pname,n.`id` as nid,n.`name` as nname,d.`id` as did,d.`name` as
         dname,j.`id` as jid,j.`name` as jname,pos.`id` as posid,pos.`name` as posname from employee e,nation
         n,politicsstatus p,department d,joblevel j,position pos where e.`nationId`=n.`id` and e.`politicId`=p.`id` and
-        e.`departmentId`=d.`id` and e.`jobLevelId`=j.`id` and e.`posId`=pos.`id` limit #{pageNum},#{size}
-        <!--<if test="emp.name !=null and emp.name!=''">
+        e.`departmentId`=d.`id` and e.`jobLevelId`=j.`id` and e.`posId`=pos.`id`
+        <if test="emp.name !=null and emp.name!=''">
             and e.name like concat('%',#{emp.name},'%')
         </if>
         <if test="emp.politicId !=null">
@@ -108,18 +130,18 @@
         <if test="emp.posId !=null">
             and e.posId =#{emp.posId}
         </if>
-        <if test="beginDateScope !=null">
-            and e.beginDate between #{beginDateScope[0]} and #{beginDateScope[1]}
+        <if test="dateScope !=null">
+            and e.beginDate between #{dateScope[0]} and #{dateScope[1]}
         </if>
-        <if test="pageNum !=null and size!=null">
-            limit #{pageNum},#{size}
-        </if>-->
+        <if test="page !=null and size!=null">
+            limit #{page},#{size}
+        </if>
     </select>
 
     <select id="getTotal" resultType="java.lang.Long">
         select count(*) from employee e
-            <where>
-                <if test="emp!=null">
+        <where>
+            <if test="emp!=null">
                 <if test="emp.name !=null and emp.name!=''">
                     and e.name like concat('%',#{emp.name},'%')
                 </if>
@@ -142,8 +164,8 @@
                     and e.posId =#{emp.posId}
                 </if>
             </if>
-                <if test="beginDateScope !=null">
-                and e.beginDate between #{beginDateScope[0]} and #{beginDateScope[1]}
+            <if test="dateScope !=null">
+                and e.beginDate between #{dateScope[0]} and #{dateScope[1]}
             </if>
         </where>
     </select>
@@ -157,8 +179,54 @@
         empsalary es ON e.`id`=es.`eid` LEFT JOIN salary s ON es.`sid`=s.`id` LEFT JOIN department d ON
         e.`departmentId`=d.`id`
         order by e.id
-        <if test="pageNum !=null and size !=null">
-            limit #{pageNum},#{size}
+        <if test="page !=null and size !=null">
+            limit #{page},#{size}
         </if>
     </select>
+
+    <select id="getCount" resultType="java.lang.Long">
+        select count(*) from employee e
+        <where>
+            <if test="depID!=null">
+                and e.departmentId=#{depID}
+            </if>
+            <if test="empName !=null and empName !=''">
+                and e.name like concat('%',#{empName},'%')
+            </if>
+        </where>
+
+    </select>
+
+    <select id="getAllEmpSalByDepId" resultMap="EmpSalWithDep">
+        SELECT e.testScore,e.id,e.workID,e.`name`,e.gender ,p.`name` as pname,d.`name` as dname,s.basicSalary,s.bonus,s.lunchSalary,s.trafficSalary,s.allSalary
+        FROM employee e
+	    LEFT JOIN empsalary es ON e.id = es.eid
+	    LEFT JOIN salary s ON es.sid = s.id
+	    LEFT JOIN position p on p.id=e.posId
+	    LEFT JOIN department d on d.id=e.departmentId
+	    <where>
+            <if test="depID !=null">
+                and e.departmentId = #{depID}
+            </if>
+            <if test="empName !=null and empName !=''">
+                and e.name like concat('%',#{empName},'%')
+            </if>
+        </where>
+        <if test="page !=null and size !=null">
+            limit #{page},#{size}
+        </if>
+    </select>
+
+    <select id="getEmpTestScoreById" resultType="java.lang.Integer">
+        select e.testScore from employee e where e.id=#{id}
+    </select>
+
+    <select id="getALlEmpByDepID" resultMap="BaseResultMap">
+        SELECT e.id,e.`name` from employee e WHERE e.departmentId=#{depID} ORDER BY e.workID
+    </select>
+
+    <select id="getEmpEcPointByEmpID" resultType="com.gz.vhr.bean.EmployeeEc">
+        SELECT ecPoint,ecDate from employeeec ec,employee e WHERE ec.eid=e.id and e.id=#{empID} ORDER BY ecDate
+    </select>
+
 </mapper>
