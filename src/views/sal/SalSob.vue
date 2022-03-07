@@ -16,6 +16,7 @@
                 <el-table-column prop="trafficSalary" label="交通补助" width="90"></el-table-column>
                 <el-table-column prop="lunchSalary" label="餐补" width="90"></el-table-column>
                 <el-table-column prop="bonus" label="奖金" width="80"></el-table-column>
+                <el-table-column prop="allSalary" label="应发工资" width="100"></el-table-column>
                 <el-table-column prop="createDate" label="启用时间" width="120"></el-table-column>
                 <el-table-column label="养老金" align="center">
                     <el-table-column width="80" prop="pensionPer" label="比率"></el-table-column>
@@ -140,6 +141,7 @@
                     trafficSalary: '',
                     lunchSalary: '',
                     bonus: '',
+                    allSalary:'',
                     pensionPer: '',
                     pensionBase: '',
                     medicalPer: '',

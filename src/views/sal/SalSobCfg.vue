@@ -30,6 +30,10 @@
                                         <td>{{scope.row.salary.bonus}}</td>
                                     </tr>
                                     <tr>
+                                        <td>应发工资</td>
+                                        <td>{{scope.row.salary.allSalary}}</td>
+                                    </tr>
+                                    <tr>
                                         <td>养老金比率</td>
                                         <td>{{scope.row.salary.pensionPer}}</td>
                                     </tr>
@@ -151,7 +155,7 @@
                 })
             },
             initEmps() {
-                this.getRequest("/salary/sobcfg/?pageNum=" + this.currentPage + '&size=' + this.currentSize).then(resp => {
+                this.getRequest("/salary/sobcfg/?page=" + this.currentPage + '&size=' + this.currentSize).then(resp => {
                     if (resp) {
                         this.emps = resp.data;
                         this.total = resp.total;

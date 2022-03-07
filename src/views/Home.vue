@@ -41,7 +41,7 @@
                                     <el-breadcrumb-item><span style="font-weight: bold">{{this.$router.currentRoute.name}}</span></el-breadcrumb-item>
                                 </el-breadcrumb>
                                 <div class="homeWelcome" v-if="this.$router.currentRoute.path=='/home'">
-                                    我吊你啊！
+                                    欢迎登录微人事！
                                 </div>
                                 <router-view class="homeRouterView"/>
                             </el-main>

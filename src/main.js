@@ -7,6 +7,9 @@ import router from './router'
 import {initMenu} from "./utils/menus";
 import 'font-awesome/css/font-awesome.min.css'
 import './assets/css/global.css'
+import * as echarts from 'echarts'
+Vue.prototype.$echarts = echarts
+
 
 import {postRequest} from "./utils/api";
 import {putRequest} from "./utils/api";

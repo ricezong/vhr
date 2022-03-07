@@ -55,7 +55,7 @@
                                         inactive-text="禁用">
                                 </el-switch>
                             </li>
-                            <li style="display: flex;justify-content:right">
+                            <li style="display: flex;">
                                 <el-tag size="small"
                                         type="success">用户角色</el-tag>
                                 <div style="margin-left: 5px">

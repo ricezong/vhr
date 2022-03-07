@@ -42,7 +42,7 @@
                                     v-model="hr.enabled">
                             </el-switch>
                         </li>
-                        <li style="display: flex;justify-content:right">
+                        <li style="display: flex;">
                             <el-tag type="success">用户角色</el-tag>
                             <div style="margin-left: 5px">
                                 <el-tag style="margin-right: 5px"
@@ -80,7 +80,6 @@
 
                 <div style="display: flex;justify-content: space-around;margin-top: 20px">
                     <el-button type="primary" @click="showUpdateHrInfoView">修改信息</el-button>
-                    <el-button type="danger" @click="showUpdatePasswdView">修改密码</el-button>
                 </div>
             </div>
         </el-card>
@@ -125,33 +124,7 @@
                 <el-button type="primary" @click="updateHrInfo">确 定</el-button>
             </span>
         </el-dialog>
-        <el-dialog
-                title="修改密码"
-                :visible.sync="passwdDialogVisible"
-                width="30%">
-            <div>
-                <el-form :model="ruleForm"
-                         status-icon
-                         :rules="rules"
-                         ref="ruleForm"
-                         label-width="100px"
-                         class="demo-ruleForm">
-                    <el-form-item label="请输入旧密码" prop="oldpass">
-                        <el-input type="password" v-model="ruleForm.oldpass" autocomplete="off"></el-input>
-                    </el-form-item>
-                    <el-form-item label="请输入新密码" prop="pass">
-                        <el-input type="password" v-model="ruleForm.pass" autocomplete="off"></el-input>
-                    </el-form-item>
-                    <el-form-item label="新确认密码" prop="checkPass">
-                        <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off"></el-input>
-                    </el-form-item>
-                    <el-form-item style="text-align: right">
-                        <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
-                        <el-button @click="resetForm('ruleForm')">重置</el-button>
-                    </el-form-item>
-                </el-form>
-            </div>
-        </el-dialog>
+
     </div>
 </template>
 
@@ -159,42 +132,7 @@
     export default {
         name: "HrInfo",
         data() {
-            var validatePass = (rule, value, callback) => {
-                if (value === '') {
-                    callback(new Error('请输入密码'));
-                } else {
-                    if (this.ruleForm.checkPass !== '') {
-                        this.$refs.ruleForm.validateField('checkPass');
-                    }
-                    callback();
-                }
-            };
-            var validatePass2 = (rule, value, callback) => {
-                if (value === '') {
-                    callback(new Error('请再次输入密码'));
-                } else if (value !== this.ruleForm.pass) {
-                    callback(new Error('两次输入密码不一致!'));
-                } else {
-                    callback();
-                }
-            };
             return {
-                ruleForm: {
-                    oldpass: '',
-                    pass: '',
-                    checkPass: ''
-                },
-                rules: {
-                    oldpass: [
-                        {validator: validatePass, trigger: 'blur'}
-                    ],
-                    pass: [
-                        {validator: validatePass, trigger: 'blur'}
-                    ],
-                    checkPass: [
-                        {validator: validatePass2, trigger: 'blur'}
-                    ]
-                },
                 allRoles: [],
                 selectedRoles: [],
                 hr: null,
