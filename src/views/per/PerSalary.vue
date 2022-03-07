@@ -223,7 +223,7 @@
                 this.postRequest("/personnel/salary/",this.empSalary).then(resp=>{
                     if (resp){
                         this.dialogVisible=false;
-                        this.initPerTrain();
+                        this.initPerSalary();
                     }
                 })
             },

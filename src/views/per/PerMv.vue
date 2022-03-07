@@ -264,7 +264,7 @@
                 this.postRequest("/personnel/remove/",this.empMv).then(resp=>{
                     if (resp){
                         this.dialogVisible=false;
-                        this.initPerTrain();
+                        this.initPerMv();
                     }
                 })
             },

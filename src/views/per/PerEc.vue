@@ -204,7 +204,7 @@
                 this.postRequest("/personnel/ec/",this.empEc).then(resp=>{
                     if (resp){
                         this.dialogVisible=false;
-                        this.initPerTrain();
+                        this.initPerEc();
                     }
                 })
             },
